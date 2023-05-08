@@ -17,6 +17,12 @@ public class Mover : MonoBehaviour {
     [SerializeField]
     bool isJumping = false;
 
+    Rigidbody rb = null;
+
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+    }
+
     // Update is called once per frame
     void Update() {
         float xValue = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
@@ -30,7 +36,6 @@ public class Mover : MonoBehaviour {
 
         if (Input.GetButtonDown("Jump") && isJumping == false) {
             // jump
-            Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null) {
                 rb.AddForceAtPosition(new Vector3(0, jumpPower, 0), transform.position, ForceMode.Impulse);
                 isJumping = true;
@@ -49,6 +54,25 @@ public class Mover : MonoBehaviour {
                 isJumping = false;
             }
 
+        }
+
+        if (other.gameObject.CompareTag("Enemy")) {
+            Vector3 point = other.GetContact(0).point;
+
+            // we jump on heads!
+            if (point.y < transform.position.y) {
+                
+                // squish it dead
+                other.gameObject.transform.localScale = new Vector3(1f, .3f, 1f);
+                other.gameObject.GetComponent<BoxCollider>().enabled = false;
+                other.gameObject.GetComponent<EnemyMover>().enabled = false;
+
+                Destroy(other.gameObject, .3f);
+
+                // bounce us slightly
+                rb.AddForceAtPosition(new Vector3(0, 1.5f, 0), transform.position, ForceMode.Impulse);
+                isJumping = true;
+            }
         }
     }
 }

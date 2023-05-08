@@ -33,8 +33,22 @@ public class Mover : MonoBehaviour {
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb != null) {
                 rb.AddForceAtPosition(new Vector3(0, jumpPower, 0), transform.position, ForceMode.Impulse);
-                // isJumping = true;
+                isJumping = true;
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.CompareTag("Platform")) {
+            // ground, bricks, etc.
+            Vector3 point = other.GetContact(0).point;
+
+            // if below me, reset jumping
+            if (point.y < transform.position.y) {
+                // reset jumping
+                isJumping = false;
+            }
+
         }
     }
 }

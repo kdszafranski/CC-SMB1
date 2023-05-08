@@ -18,9 +18,11 @@ public class Mover : MonoBehaviour {
     bool isJumping = false;
 
     Rigidbody rb = null;
+    GameController gc;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        gc = GameObject.Find("Controller").GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -72,6 +74,13 @@ public class Mover : MonoBehaviour {
                 // bounce us slightly
                 rb.AddForceAtPosition(new Vector3(0, 1.5f, 0), transform.position, ForceMode.Impulse);
                 isJumping = true;
+            }
+        }
+
+        if(other.gameObject.CompareTag("KillLevel")) {
+            // we're dead, should use events in some form
+            if(gc != null) {
+                gc.OnDeath();
             }
         }
     }

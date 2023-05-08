@@ -131,4 +131,6 @@ MonoBehaviour:
   moveSpeed: 4
   runSpeed: 7.5
   isAlive: 1
+  jumpPower: 8
   myName: Mario
+  isJumping: 0

@@ -16,6 +16,8 @@ public class Mover : MonoBehaviour {
     string myName = "Mario";
     [SerializeField]
     bool isJumping = false;
+    [SerializeField]
+    float stompBounceForce = 2f;
 
     Rigidbody rb = null;
     GameController gc;
@@ -51,9 +53,19 @@ public class Mover : MonoBehaviour {
             Vector3 point = other.GetContact(0).point;
 
             // if below me, reset jumping
-            if (point.y < transform.position.y) {
+            if (isJumping && point.y < transform.position.y) {
                 // reset jumping
                 isJumping = false;
+            }
+            if(isJumping && point.y > transform.position.y) {
+                Block block = other.gameObject.GetComponentInChildren<Block>();
+                if(block) {
+                    if(block.IsMysteryBlock) {
+                        block.HitBlock();
+                    }
+                }
+                // bonk it
+                iTween.PunchPosition(other.gameObject, new Vector3(0, .5f, 0), .5f);
             }
 
         }
@@ -72,7 +84,7 @@ public class Mover : MonoBehaviour {
                 Destroy(other.gameObject, .3f);
 
                 // bounce us slightly
-                rb.AddForceAtPosition(new Vector3(0, 1.5f, 0), transform.position, ForceMode.Impulse);
+                rb.AddForceAtPosition(new Vector3(0, stompBounceForce, 0), transform.position, ForceMode.Impulse);
                 isJumping = true;
             }
         }

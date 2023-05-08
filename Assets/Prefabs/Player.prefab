@@ -134,3 +134,4 @@ MonoBehaviour:
   jumpPower: 8
   myName: Mario
   isJumping: 0
+  stompBounceForce: 3

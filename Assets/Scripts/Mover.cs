@@ -57,15 +57,12 @@ public class Mover : MonoBehaviour {
                 // reset jumping
                 isJumping = false;
             }
-            if(isJumping && point.y > transform.position.y) {
+            if (isJumping && point.y > transform.position.y) {
                 Block block = other.gameObject.GetComponentInChildren<Block>();
-                if(block) {
-                    if(block.IsMysteryBlock) {
-                        block.HitBlock();
-                    }
+                if (block) {
+                    block.HitBlock();
                 }
-                // bonk it
-                iTween.PunchPosition(other.gameObject, new Vector3(0, .5f, 0), .5f);
+
             }
 
         }
@@ -75,7 +72,7 @@ public class Mover : MonoBehaviour {
 
             // we jump on heads!
             if (point.y < transform.position.y) {
-                
+
                 // squish it dead
                 other.gameObject.transform.localScale = new Vector3(1f, .3f, 1f);
                 other.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -89,9 +86,9 @@ public class Mover : MonoBehaviour {
             }
         }
 
-        if(other.gameObject.CompareTag("KillLevel")) {
+        if (other.gameObject.CompareTag("KillLevel")) {
             // we're dead, should use events in some form
-            if(gc != null) {
+            if (gc != null) {
                 gc.OnDeath();
             }
         }

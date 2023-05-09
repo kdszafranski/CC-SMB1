@@ -29,11 +29,13 @@ public class Mover : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        float xValue = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
+        float xValue;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+        if (Input.GetKeyDown(KeyCode.D)) {
             // running
             xValue = Input.GetAxis("Horizontal") * Time.deltaTime * runSpeed;
+        } else {
+            xValue = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
         }
 
         transform.Translate(xValue, 0f, 0f);
